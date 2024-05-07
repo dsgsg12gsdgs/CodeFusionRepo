@@ -1,28 +1,15 @@
-function reorderList(head) {
-  if (!head || !head.next) return;
-  let slow = head;
-  let fast = head;
-  while (fast.next && fast.next.next) {
-    slow = slow.next;
-    fast = fast.next.next;
+function merge(intervals) {
+  intervals.sort((a, b) => a[0] - b[0]);
+  const merged = [];
+  for (const interval of intervals) {
+    if (!merged.length || merged[merged.length - 1][1] < interval[0]) {
+      merged.push(interval);
+    } else {
+      merged[merged.length - 1][1] = Math.max(
+        merged[merged.length - 1][1],
+        interval[1],
+      );
+    }
   }
-  let prev = null;
-  let curr = slow.next;
-  slow.next = null;
-  while (curr) {
-    const next = curr.next;
-    curr.next = prev;
-    prev = curr;
-    curr = next;
-  }
-  let first = head;
-  let second = prev;
-  while (second) {
-    const nextFirst = first.next;
-    const nextSecond = second.next;
-    first.next = second;
-    second.next = nextFirst;
-    first = nextFirst;
-    second = nextSecond;
-  }
+  return merged;
 }
